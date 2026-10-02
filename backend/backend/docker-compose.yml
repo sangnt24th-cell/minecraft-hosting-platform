@@ -1,0 +1,21 @@
+version: '3.8'
+
+# Chỉ dùng để chạy PostgreSQL cho môi trường dev.
+# Backend NestJS vẫn chạy trực tiếp bằng "npm run start:dev" trên máy (không đóng gói ở đây),
+# vì backend cần truy cập Docker socket của máy host để tạo container Minecraft khác.
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mc-hosting-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: minecraft_hosting
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
